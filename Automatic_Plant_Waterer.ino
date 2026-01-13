@@ -1,11 +1,15 @@
 const int relayInputPin = 4; //digital pin  to activate relay and begin watering
 
+const int soilMoistureSensorPin = A3; 
+int moistureValue = 0; //stores the moisture level
 //The relay I use is a low activation relay, our pump is powered by NO not NC. (NC stands for normally closed and NO for normally open)
 //if your is relay high relay swap the activate and deactivate relay functions. For this reason my relayed electricty is being connected by  the NC terminal of the relay not the NO. 
 //Im using the Tongling  5VDC JQC 3FF relay (blue one)
 
 void setup() {
+  Serial.begin(9600); 
   pinMode(relayInputPin, OUTPUT);
+  
 
   //4 seconds before relay first activates
   deactivate_relay();
@@ -19,11 +23,16 @@ void setup() {
 
 void loop() {
 
+  moistureValue = analogRead(soilMoistureSensorPin); //every loop check moisture (later maybe make one that runs every once in a while and then when spraying water check every frame again)
+  Serial.print("Moister Level: ");
+  Serial.println(moistureValue);
+
+
   
   deactivate_relay();
-  delay(15000);
+  delay(25000);
   activate_relay();
-  delay(500);
+  delay(1500);
 
 
 
